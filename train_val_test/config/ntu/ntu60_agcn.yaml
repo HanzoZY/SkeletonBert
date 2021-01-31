@@ -1,0 +1,69 @@
+data: 'ntu_skeleton'
+data_param:
+  train_data_param:
+    data_path: ../data_files/ntu_60/xsub/train_data_joint.npy
+    label_path: ../data_files/ntu_60/xsub/train_label.pkl
+    random_choose: True
+    center_choose: False
+    window_size: 150
+    final_size: 128
+    num_skip_frame:
+    decouple_spatial: False
+  val_data_param:
+    data_path: ../data_files/ntu_60/xsub/val_data_joint.npy
+    label_path: ../data_files/ntu_60/xsub/val_label.pkl
+    random_choose: False
+    center_choose: True
+    window_size: 150
+    final_size: 128
+    num_skip_frame:
+    decouple_spatial: False
+
+# model
+model: 'agcn'
+class_num: 60
+model_param:
+  num_point: 25
+  num_subset: 3
+  num_person: 2
+  in_channels: 3
+  out_channel: 256
+  num_super_nodes: 6
+  add_before_bn: False
+  add_idx: True
+
+
+train: 'classify'
+mode: 'train_val'
+loss: 'cross_entropy'
+batch_size: 32
+worker: 32
+pin_memory: False
+num_epoch_per_save: 200
+model_saved_name: './work_dir/ntu60/agcn_multi_scale'
+last_model:
+pre_trained_model:
+ignore_weights: ['fc']
+label_smoothing_num: 0
+mix_up_num: 0
+device_id: []
+cuda_visible_device: ''
+debug: False
+
+# lr
+lr_scheduler: 'reduce_by_epoch'
+lr_param:
+  step: [60, 90]
+#  lr_patience: 10
+#  lr_threshold: 0.0001
+#  lr_delay: 0
+warm_up_epoch: 5
+max_epoch: 120
+lr: 0.1
+wd: 0.0005
+lr_decay_ratio: 0.1
+lr_multi_keys: []
+
+# optimizer
+optimizer: 'sgd_nev'
+freeze_keys: []

@@ -1,0 +1,79 @@
+data: 'shrec_skeleton'
+data_param:
+  train_data_param:
+    data_path: ../data_files/SHREC/train_skeleton.pkl
+    label_path: ../data_files/SHREC/train_label_28.pkl
+    random_choose: True
+    center_choose: False
+    window_size: 150
+    final_size: 128
+    num_skip_frame:
+    decouple_spatial: False
+  val_data_param:
+    data_path: ../data_files/SHREC/val_skeleton.pkl
+    label_path: ../data_files/SHREC/val_label_28.pkl
+    random_choose: False
+    center_choose: True
+    window_size: 150
+    final_size: 128
+    num_skip_frame:
+    decouple_spatial: False
+
+# model
+model: 'bertnet'
+class_num: 28
+model_param:
+  num_point: 22
+  num_frame: 128
+  num_subset: 4
+  num_person: 1
+  out_channel: 256
+  dropout: 0
+  attentiondrop: 0
+  dropout2d: 0
+  sample_for_pretext_rate: 0.2
+  chose_rate4mask: 0.1
+  num_seg: 3
+  layers_in_dim: [64,64,64,128,128,256,256,256]
+  pretext_task_Train: False
+  context: False
+  global_S_A: False
+  use_dsta: False
+
+
+train: 'classify'
+mode: 'test'
+loss: 'cross_entropy'
+batch_size: 32
+worker: 32
+pin_memory: False
+num_epoch_per_save: 100
+model_saved_name: './work_dir/shrec28/bert_drop0_6090120_128'
+last_model: './work_dir/shrec28/bert_drop0_6090120_128-latest.state'
+pre_trained_model:
+ignore_weights: []
+label_smoothing_num: 0
+mix_up_num: 0
+device_id: []
+cuda_visible_device: ''
+debug: False
+
+# lr
+lr_scheduler: 'reduce_by_epoch'
+lr_param:
+  step: [60, 90]
+  gamma: 0.1
+#  lr_patience: 20
+#  lr_threshold: 0.0001
+#  lr_delay: 10
+warm_up_epoch: 5
+max_epoch: 120
+lr: 0.1
+wd: 0.0005
+lr_decay_ratio: 0.1
+lr_multi_keys: []
+
+# optimizer
+optimizer: 'sgd_nev'
+freeze_keys: []
+
